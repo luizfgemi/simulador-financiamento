@@ -1,0 +1,20 @@
+/* Estilos personalizados para o Simulador de Financiamento */
+
+/* Ícone de informação junto aos rótulos */
+.info-icon {
+    cursor: pointer;
+    color: #0d6efd;
+    margin-left: 4px;
+  }
+  
+  /* Ajuste de espaçamento entre seções, se necessário */
+  .container {
+    max-width: 900px;
+  }
+  
+  /* Responsividade adicional para canvas de gráficos */
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
