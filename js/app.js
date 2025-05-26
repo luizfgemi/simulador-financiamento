@@ -97,6 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('res_tae').innerText = tae.toFixed(2) + '%';
         document.getElementById('resultado').style.display = 'block';
 
+        // IPVA aproximado (4%)
+        const aliquotaIpva = new Decimal(4).div(100);
+        const ipva = valor.mul(aliquotaIpva);
+        document.getElementById('res_ipva').innerText = formatCurrency(ipva);
+
+        // Quitação Antecipada
+        const saldoQuitacao = schedule[mesQuit - 1].saldo;
+        const totalQuitacao = parcela.mul(mesQuit).add(saldoQuitacao);
+        const economia = totalPago.sub(totalQuitacao);
+
+        document.getElementById('res_quit_mes').innerText = mesQuit;
+        document.getElementById('res_quit_valor').innerText = formatCurrency(saldoQuitacao);
+        document.getElementById('res_quit_total').innerText = formatCurrency(totalQuitacao.toNumber());
+        document.getElementById('res_quit_economia').innerText = formatCurrency(economia.toNumber());
+
         // Destrói gráficos anteriores, se existirem
         if (chartAmortizacao) chartAmortizacao.destroy();
         if (chartSaldo) chartSaldo.destroy();
