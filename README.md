@@ -12,6 +12,9 @@ Este projeto é um simulador de financiamento de veículos totalmente client-sid
 * **Exportação CSV**: baixar tabela de evolução.
 * **Custo Real do Financiamento**: considera a inflação estimada.
 * **Valor Presente Líquido (VPL)**: aplica uma taxa de desconto mensal.
+  Compara o valor do veículo à vista com todas as parcelas descontadas pela taxa
+  informada. Se o resultado for negativo, indica que financiar é mais caro do
+  que pagar à vista considerando esse rendimento.
 
 ## Licença
 
