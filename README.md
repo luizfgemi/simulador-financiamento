@@ -10,6 +10,8 @@ Este projeto é um simulador de financiamento de veículos totalmente client-sid
 * **Gráficos interativos**: composição das parcelas e evolução do saldo.
 * **Tabelas detalhadas**: evolução completa e comparativo SAC.
 * **Exportação CSV**: baixar tabela de evolução.
+* **Custo Real do Financiamento**: considera a inflação estimada.
+* **Valor Presente Líquido (VPL)**: aplica uma taxa de desconto mensal.
 
 ## Licença
 
