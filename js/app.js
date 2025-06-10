@@ -35,8 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Parcela Price
         const baseP = new Decimal(1).add(jurosM);
-        const parcela = valorFin.mul(jurosM)
-            .div(new Decimal(1).sub(decimalPow(baseP, new Decimal(-prazo))));
+        let parcela;
+        if (jurosM.eq(0)) {
+            // Evita divisão 0/0 quando a taxa é zero
+            parcela = valorFin.div(prazo);
+        } else {
+            parcela = valorFin.mul(jurosM)
+                .div(new Decimal(1).sub(decimalPow(baseP, new Decimal(-prazo))));
+        }
         const totalPago = parcela.mul(prazo);
         const jurosTot = totalPago.sub(valorFin);
 
