@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const valor = new Decimal(document.getElementById('valor').value);
         const entradaPerc = new Decimal(document.getElementById('entrada_perc').value);
         const taxaJuros = new Decimal(document.getElementById('taxa_juros').value);
-        const prazo = parseInt(document.getElementById('prazo').value, 10);
+        // Prazo mínimo de 1 mês
+        const prazo = Math.max(parseInt(document.getElementById('prazo').value, 10), 1);
         const inflacaoAnual = new Decimal(document.getElementById('inflacao_anual').value);
         const taxaDescMensal = new Decimal(document.getElementById('taxa_desconto_mensal').value);
         const mesQuitRaw = parseInt(document.getElementById('mes_quitacao').value, 10);
