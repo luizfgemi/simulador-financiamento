@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const taxaJuros = new Decimal(document.getElementById('taxa_juros').value);
         const prazo = parseInt(document.getElementById('prazo').value, 10);
         const inflacaoAnual = new Decimal(document.getElementById('inflacao_anual').value);
+        const taxaDescMensal = new Decimal(document.getElementById('taxa_desconto_mensal').value);
         const mesQuit = Math.min(Math.max(parseInt(document.getElementById('mes_quitacao').value, 10), 1), prazo);
 
         // Cálculos básicos
@@ -58,8 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
             arrS.push(Math.max(saldo.toNumber(), 0));
         }
 
-        // Taxa Anual Equivalente (TAE)
-        const tae = decimalPow(baseP, new Decimal(12)).sub(1).mul(100);
+        // Taxa Anual Equivalente (TAE) e Custo Real do Financiamento
+        const taeBase = decimalPow(baseP, new Decimal(12));
+        const tae = taeBase.sub(1).mul(100);
+        const custoReal = taeBase.div(new Decimal(1).add(inflacaoAnual.div(100)))
+            .sub(1)
+            .mul(100);
 
         // Sistema SAC
         const sacParcels = [];
@@ -93,6 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Valor Presente Líquido (VPL) usando taxa de desconto mensal
+        const descM = taxaDescMensal.div(100);
+        let vpl = valor.sub(entrada);
+        for (let i = 0; i < prazo; i++) {
+            const fator = decimalPow(new Decimal(1).add(descM), new Decimal(i + 1));
+            vpl = vpl.sub(parcela.div(fator));
+        }
+
         // Exibir resumo
         document.getElementById('res_valor').innerText = formatCurrency(valor);
         document.getElementById('res_entrada').innerText = formatCurrency(entrada);
@@ -101,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('res_total_pago').innerText = formatCurrency(totalPago.toNumber());
         document.getElementById('res_juros_totais').innerText = formatCurrency(jurosTot.toNumber());
         document.getElementById('res_tae').innerText = tae.toFixed(2) + '%';
+        document.getElementById('res_custo_real').innerText = custoReal.toFixed(2) + '%';
+        document.getElementById('res_vpl').innerText = formatCurrency(vpl.toNumber());
         document.getElementById('resultado').style.display = 'block';
 
         // IPVA aproximado (4%)
