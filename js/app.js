@@ -27,7 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const prazo = parseInt(document.getElementById('prazo').value, 10);
         const inflacaoAnual = new Decimal(document.getElementById('inflacao_anual').value);
         const taxaDescMensal = new Decimal(document.getElementById('taxa_desconto_mensal').value);
-        const mesQuit = Math.min(Math.max(parseInt(document.getElementById('mes_quitacao').value, 10), 1), prazo);
+        const mesQuitRaw = parseInt(document.getElementById('mes_quitacao').value, 10);
+        let mesQuit;
+        if (isNaN(mesQuitRaw) || mesQuitRaw < 1 || mesQuitRaw > prazo) {
+            mesQuit = prazo;
+        } else {
+            mesQuit = mesQuitRaw;
+        }
 
         // Cálculos básicos
         const entrada = valor.mul(entradaPerc.div(100));
