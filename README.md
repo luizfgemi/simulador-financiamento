@@ -15,6 +15,7 @@ Este projeto é um simulador de financiamento de veículos totalmente client-sid
   Compara o valor do veículo à vista com todas as parcelas descontadas pela taxa
   informada. Se o resultado for negativo, indica que financiar é mais caro do
   que pagar à vista considerando esse rendimento.
+* **Simulação de Quitação Antecipada**: calcula a economia ao pagar antes do prazo.
 
 ## Licença
 
