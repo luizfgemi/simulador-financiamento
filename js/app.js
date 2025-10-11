@@ -211,6 +211,29 @@ document.addEventListener('DOMContentLoaded', () => {
             link.click();
             document.body.removeChild(link);
         };
+
+         // Exportar PDF
+         window.baixarPDF = () => {
+             const { jsPDF } = window.jspdf;
+             const doc = new jsPDF();
+             doc.setFontSize(16);
+             doc.text('Resumo da Simulação de Financiamento', 10, 15);
+             doc.setFontSize(12);
+             doc.text(`Valor do Veículo: ${document.getElementById('res_valor').innerText}`, 10, 30);
+             doc.text(`Entrada: ${document.getElementById('res_entrada').innerText}`, 10, 38);
+             doc.text(`Valor Financiado: ${document.getElementById('res_valor_fin').innerText}`, 10, 46);
+             doc.text(`Parcela Mensal: ${document.getElementById('res_parcela').innerText}`, 10, 54);
+             doc.text(`Total Pago: ${document.getElementById('res_total_pago').innerText}`, 10, 62);
+             doc.text(`Juros Totais: ${document.getElementById('res_juros_totais').innerText}`, 10, 70);
+             doc.text(`Taxa Anual Equivalente: ${document.getElementById('res_tae').innerText}`, 10, 78);
+             doc.text(`Custo Real do Financiamento: ${document.getElementById('res_custo_real').innerText}`, 10, 86);
+             doc.text(`VPL: ${document.getElementById('res_vpl').innerText}`, 10, 94);
+             doc.text(`IPVA Estimado: ${document.getElementById('res_ipva').innerText}`, 10, 102);
+             doc.text(`Quitação Antecipada (Mês ${document.getElementById('res_quit_mes').innerText}): ${document.getElementById('res_quit_valor').innerText}`, 10, 110);
+             doc.text(`Total com Quitação: ${document.getElementById('res_quit_total').innerText}`, 10, 118);
+             doc.text(`Economia de Juros: ${document.getElementById('res_quit_economia').innerText}`, 10, 126);
+             doc.save('simulacao_financiamento.pdf');
+         };
     });
 });
 
