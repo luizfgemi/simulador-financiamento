@@ -215,14 +215,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Validação em tempo real dos campos do formulário
+
 const campos = [
-    { id: 'valor', tipo: 'number', min: 0, mensagem: 'O valor deve ser positivo.' },
-    { id: 'entrada_perc', tipo: 'number', min: 0, max: 100, mensagem: 'A entrada deve ser entre 0% e 100%.' },
-    { id: 'taxa_juros', tipo: 'number', min: 0, mensagem: 'A taxa de juros não pode ser negativa.' },
-    { id: 'prazo', tipo: 'number', min: 1, mensagem: 'O prazo deve ser de pelo menos 1 mês.' },
-    { id: 'inflacao_anual', tipo: 'number', min: 0, mensagem: 'A inflação não pode ser negativa.' },
-    { id: 'taxa_desconto_mensal', tipo: 'number', min: 0, mensagem: 'A taxa de desconto não pode ser negativa.' },
-    { id: 'mes_quitacao', tipo: 'number', min: 1, mensagem: 'O mês de quitação deve ser maior que zero.' }
+    { id: 'valor', tipo: 'number', min: 0, mensagem: 'Digite o valor total do veículo (apenas números positivos, sem centavos). Exemplo: 78900.' },
+    { id: 'entrada_perc', tipo: 'number', min: 0, max: 100, mensagem: 'Informe o percentual de entrada entre 0% e 100%. Exemplo: 20 para 20%.' },
+    { id: 'taxa_juros', tipo: 'number', min: 0, mensagem: 'Digite a taxa de juros mensal (nunca negativa). Exemplo: 1.5 para 1,5% ao mês.' },
+    { id: 'prazo', tipo: 'number', min: 1, mensagem: 'O prazo deve ser de pelo menos 1 mês. Exemplo: 60 para 5 anos.' },
+    { id: 'inflacao_anual', tipo: 'number', min: 0, mensagem: 'Digite a inflação anual estimada (nunca negativa). Exemplo: 4.0 para 4% ao ano.' },
+    { id: 'taxa_desconto_mensal', tipo: 'number', min: 0, mensagem: 'Digite a taxa de desconto mensal esperada (nunca negativa). Exemplo: 1.0 para 1% ao mês.' },
+    { id: 'mes_quitacao', tipo: 'number', min: 1, mensagem: 'Escolha um mês para simular quitação antecipada (deve ser entre 1 e o prazo total).' }
 ];
 
 campos.forEach(campo => {
@@ -232,13 +233,13 @@ campos.forEach(campo => {
         let valor = parseFloat(input.value);
         let erro = '';
         if (isNaN(valor)) {
-            erro = 'Preencha um valor válido.';
+            erro = 'Preencha um valor válido. Dica: apenas números, sem símbolos ou letras.';
         } else {
             if (campo.min !== undefined && valor < campo.min) erro = campo.mensagem;
             if (campo.max !== undefined && valor > campo.max) erro = campo.mensagem;
             if (campo.id === 'mes_quitacao') {
                 const prazo = parseInt(document.getElementById('prazo').value, 10);
-                if (valor > prazo) erro = 'O mês de quitação não pode ser maior que o prazo.';
+                if (valor > prazo) erro = 'O mês de quitação deve ser menor ou igual ao prazo total informado.';
             }
         }
         let msg = input.parentElement.querySelector('.invalid-feedback');
@@ -249,10 +250,10 @@ campos.forEach(campo => {
         }
         if (erro) {
             input.classList.add('is-invalid');
-            msg.textContent = erro;
+            msg.innerHTML = `<span style='color:#b02a37;font-weight:500;'>${erro}</span>`;
         } else {
             input.classList.remove('is-invalid');
-            msg.textContent = '';
+            msg.innerHTML = '';
         }
     });
 });
