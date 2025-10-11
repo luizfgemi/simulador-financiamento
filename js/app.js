@@ -213,3 +213,63 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 });
+
+// Validação em tempo real dos campos do formulário
+const campos = [
+    { id: 'valor', tipo: 'number', min: 0, mensagem: 'O valor deve ser positivo.' },
+    { id: 'entrada_perc', tipo: 'number', min: 0, max: 100, mensagem: 'A entrada deve ser entre 0% e 100%.' },
+    { id: 'taxa_juros', tipo: 'number', min: 0, mensagem: 'A taxa de juros não pode ser negativa.' },
+    { id: 'prazo', tipo: 'number', min: 1, mensagem: 'O prazo deve ser de pelo menos 1 mês.' },
+    { id: 'inflacao_anual', tipo: 'number', min: 0, mensagem: 'A inflação não pode ser negativa.' },
+    { id: 'taxa_desconto_mensal', tipo: 'number', min: 0, mensagem: 'A taxa de desconto não pode ser negativa.' },
+    { id: 'mes_quitacao', tipo: 'number', min: 1, mensagem: 'O mês de quitação deve ser maior que zero.' }
+];
+
+campos.forEach(campo => {
+    const input = document.getElementById(campo.id);
+    if (!input) return;
+    input.addEventListener('input', function () {
+        let valor = parseFloat(input.value);
+        let erro = '';
+        if (isNaN(valor)) {
+            erro = 'Preencha um valor válido.';
+        } else {
+            if (campo.min !== undefined && valor < campo.min) erro = campo.mensagem;
+            if (campo.max !== undefined && valor > campo.max) erro = campo.mensagem;
+            if (campo.id === 'mes_quitacao') {
+                const prazo = parseInt(document.getElementById('prazo').value, 10);
+                if (valor > prazo) erro = 'O mês de quitação não pode ser maior que o prazo.';
+            }
+        }
+        let msg = input.parentElement.querySelector('.invalid-feedback');
+        if (!msg) {
+            msg = document.createElement('div');
+            msg.className = 'invalid-feedback';
+            input.parentElement.appendChild(msg);
+        }
+        if (erro) {
+            input.classList.add('is-invalid');
+            msg.textContent = erro;
+        } else {
+            input.classList.remove('is-invalid');
+            msg.textContent = '';
+        }
+    });
+});
+
+// Impede submissão se houver erro
+const form = document.getElementById('form-financiamento');
+form.addEventListener('submit', function (e) {
+    let algumErro = false;
+    campos.forEach(campo => {
+        const input = document.getElementById(campo.id);
+        if (input.classList.contains('is-invalid') || input.value === '') {
+            algumErro = true;
+            input.classList.add('is-invalid');
+        }
+    });
+    if (algumErro) {
+        e.preventDefault();
+        return false;
+    }
+});
